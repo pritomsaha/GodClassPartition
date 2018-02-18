@@ -11,11 +11,19 @@ import model.Method;
 
 public class Main {
 
-	public static void main(String[] args) throws FileNotFoundException {
-		String filePath = "UserManagement.java";
+	public static void main(String[] args) {
+		String projectPath = "/home/pritom/Downloads/xerces2-j-Xerces-J_2_7_0";
+		FileHandler fileHandler = new FileHandler();
+		List<File>  files = fileHandler.getJavaFiles(projectPath);
+		for (File file: files){
+			System.out.println(file.getAbsolutePath());
+			proceed(file);
+			System.out.println();
+		}
 
-		File file = new File(filePath);
+	}
 
+	public static void proceed(File file){
 		//Extract all methods
 		MethodExtractor methodEX = new MethodExtractor();
 		methodEX.extractMethodsFromSourceFile(file);
@@ -26,7 +34,7 @@ public class Main {
 			Method m = methods.get(i);
 			m.setMethodID(i);
 
-			//Extract and set method calls 
+			//Extract and set method calls
 			MethodCallExtractor methodCallEX = new MethodCallExtractor();
 			methodCallEX.extractMethodCallsInsideAMethod(m.getMethodCode());
 			List<String> methodCallList = methodCallEX.getMethodCallsList();
@@ -42,9 +50,8 @@ public class Main {
 			for (Integer mIndex: cChain){
 				System.out.print(methods.get(mIndex).getMethodName()+", ");
 			}
-			System.out.println();
+			System.out.println("\n");
 		}
-		
 	}
 
 }
