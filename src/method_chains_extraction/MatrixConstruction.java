@@ -11,9 +11,9 @@ public class MatrixConstruction {
     private int numMethod;
     private List<Method> methods;
 
-    public MatrixConstruction(List<Method> methodes){
-        this.methods = methodes;
-        this.numMethod = methodes.size();
+    public MatrixConstruction(List<Method> methods){
+        this.methods = methods;
+        this.numMethod = methods.size();
         this.matrix = new double[this.numMethod][this.numMethod];
         this.generateMatrix();
     }
@@ -83,7 +83,8 @@ public class MatrixConstruction {
     }
 
     private void calculateCSM(){
-        TfIdf tfIdf = new TfIdf(this.methods);
+        TfIdf tfIdf = new TfIdf();
+        tfIdf.calcWithStatements(this.methods);
         double[][] tfIdfVectors = tfIdf.getTfIdfVectors();
         double[] euclideanNorm = tfIdf.getEuclideanNorm();
 

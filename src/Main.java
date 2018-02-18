@@ -4,21 +4,24 @@ import java.util.List;
 
 import extractor.MethodCallExtractor;
 import extractor.MethodExtractor;
+import matrix_from_comments.MatrixConstructionWithComment;
 import method_chains_extraction.ChainExtraction;
 import model.Method;
 
 public class Main {
 
 	public static void main(String[] args) {
-		String projectPath = "/home/pritom/Downloads/xerces2-j-Xerces-J_2_7_0";
-		//String projectPath = "UserManagement.java";
+//		String projectPath = "/home/pritom/Downloads/xerces2-j-Xerces-J_2_7_0";
+		String projectPath = "/home/pritom/Downloads/AbstractDOMParser.java";
 		FileHandler fileHandler = new FileHandler();
 		List<File>  files = fileHandler.getJavaFiles(projectPath);
 		for (File file: files){
-			System.out.println(file.getAbsolutePath());
+ 			System.out.println(file.getAbsolutePath());
 			proceed(file);
 			System.out.println();
 		}
+
+		MatWithComments(files);
 
 	}
 
@@ -49,6 +52,15 @@ public class Main {
 				System.out.print(methods.get(mIndex).getMethodName()+", ");
 			}
 			System.out.println("\n");
+		}
+	}
+
+	public static void MatWithComments(List<File> files){
+		for (File file: files) {
+			MethodExtractor methodEX = new MethodExtractor();
+			List<Method> methods = methodEX.extractMethodsWithComments(file);
+			MatrixConstructionWithComment construction = new MatrixConstructionWithComment(methods);
+			construction.printMat();
 		}
 	}
 

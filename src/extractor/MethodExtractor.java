@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.github.javaparser.JavaCharStream;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.Parameter;
@@ -15,6 +18,7 @@ import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.body.VariableDeclarator;
 
 
+import com.github.javaparser.javadoc.Javadoc;
 import model.Method;
 
 public class MethodExtractor {
@@ -68,19 +72,9 @@ public class MethodExtractor {
 				@Override
 				public void visit(MethodDeclaration n, Object arg) {
 
+					List<String> comments = Arrays.asList((n.getComment().get().getContent().trim()+n.getAllContainedComments().toString().trim()).split("\\s+"));
 					String methodName = n.getNameAsString();
-					statementList = new ArrayList<>();
-					instanceVariables = new ArrayList<>();
-					if(n.getChildNodes().size()>0) {
-
-						for (Node node: n.getChildNodes()){
-
-							processNode(node);
-						}
-					}
-					String methodCode = n.toString();
-					methods.add(new Method(methodName, methodCode, statementList, instanceVariables));
-
+					methods.add(new Method(methodName, comments));
 					super.visit(n, arg);
 				}
 			}.visit(JavaParser.parse(file), null);

@@ -10,13 +10,20 @@ public class TfIdf {
     private double[][] tfIdfVectors;
     private double[] euclideanNorm;
 
-    public TfIdf(List<Method> methods){
-        this.methods = new MethodProcessing().process(methods);
+    public double[][] getTfIdfVectors() {
+        return tfIdfVectors;
+    }
+
+    public void calcWithStatements(List<Method> methods)
+    {
+        this.methods = new MethodProcessing().processWithStatements(methods);
         this.calculateVectors();
     }
 
-    public double[][] getTfIdfVectors() {
-        return tfIdfVectors;
+    public void calcWithComments(List<Method> methods)
+    {
+        this.methods = new MethodProcessing().processWithComments(methods);
+        this.calculateVectors();
     }
 
     public double[] getEuclideanNorm() {

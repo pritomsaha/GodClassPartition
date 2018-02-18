@@ -3,37 +3,51 @@ package IR;
 import model.Method;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MethodProcessing {
 
-    public List<List<String>> process(List<Method> methods){
+    public List<List<String>> processWithStatements(List<Method> methods){
         List<List<String>> processedMethods = new ArrayList<>();
         for(Method method: methods){
-            List<String> statementList = camelCaseSplit(method.getStatementList());
-            statementList = makeLowerCase(statementList);
-            statementList = removeSpecialCharacter(statementList);
-            statementList = stem(statementList);
-            processedMethods.add(statementList);
+            List<String> processedMethod = camelCaseSplit(method.getStatementList());
+            processedMethod = makeLowerCase(processedMethod);
+            processedMethod = removeSpecialCharacter(processedMethod);
+            processedMethod = stem(processedMethod);
+            processedMethods.add(processedMethod);
         }
 
         return processedMethods;
     }
 
-    private List<String> camelCaseSplit(List<String> statementList){
-
-        ArrayList<String> changedStatements = new ArrayList<>();
-        for(String statement : statementList) {
-            String tempStatement = "";
-            String[] splited = statement.trim().split("\\s+");
-            for(String word : splited) {
-                tempStatement += splitWord(word.trim());
-            }
-            changedStatements.add(tempStatement);
+    public List<List<String>> processWithComments(List<Method> methods){
+        List<List<String>> processedMethods = new ArrayList<>();
+        for(Method method: methods){
+            List<String> processedMethod = camelCaseSplit(method.getComments());
+            processedMethod = makeLowerCase(processedMethod);
+            processedMethod = removeSpecialCharacter(processedMethod);
+            processedMethod = stem(processedMethod);
+            processedMethods.add(processedMethod);
         }
 
-        return changedStatements;
+        return processedMethods;
+    }
+
+    private List<String> camelCaseSplit(List<String> method){
+
+        ArrayList<String> changedMethod = new ArrayList<>();
+        for(String statement : method) {
+            String temp = "";
+            String[] splited = statement.trim().split("\\s+");
+            for(String word : splited) {
+                temp += splitWord(word.trim());
+            }
+            changedMethod.add(temp);
+        }
+
+        return changedMethod;
     }
 
     private String splitWord(String word) {
@@ -44,28 +58,28 @@ public class MethodProcessing {
         return words;
     }
 
-    private List<String> makeLowerCase(List<String> statementList){
-        List<String> changedStatements = statementList.stream()
+    private List<String> makeLowerCase(List<String> method){
+        List<String> changedMethod = method.stream()
                 .map(String::toLowerCase)
                 .collect(Collectors.toList());
 
-        return changedStatements;
+        return changedMethod;
     }
 
-    private List<String> removeSpecialCharacter(List<String> statementList){
-        List<String> changedStatements = new ArrayList<>();
-        for(String statement : statementList) {
-            changedStatements.add(statement.replaceAll("[^A-Za-z]+", " ").trim());
+    private List<String> removeSpecialCharacter(List<String> method){
+        List<String> changedMethod = new ArrayList<>();
+        for(String word : method) {
+            changedMethod.add(word.replaceAll("[^A-Za-z]+", " ").trim());
         }
-        return changedStatements;
+        return changedMethod;
     }
 
 
-    private List<String> stem(List<String> statementList){
-        List<String> changedStatements = new ArrayList<>();
+    private List<String> stem(List<String> method){
+        List<String> changedMethod = new ArrayList<>();
 
-        for(String statement: statementList){
-            String[] words = statement.trim().split("\\s+");
+        for(String str: method){
+            String[] words = str.trim().split("\\s+");
             String temp = "";
             for(String word: words){
                 Porterstemmer stemmer = new Porterstemmer();
@@ -73,10 +87,10 @@ public class MethodProcessing {
                 stemmer.stem();
                 temp += (" " + stemmer.toString());
             }
-            changedStatements.add(temp);
+            changedMethod.add(temp.trim());
         }
-
-        return changedStatements;
+        changedMethod.removeAll(Collections.singleton(""));
+        return changedMethod;
     }
 
 }
