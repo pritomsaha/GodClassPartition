@@ -11,6 +11,7 @@ public class Method {
 	private List<String> instanceVarList;
 	private List<String> methodCallList;
 	private List<String> statementList;
+	private List<String> comments;
 
 	public Method(String methodName,
 			String methodCode, List<String> statementList, List<String> instanceVarList) {
@@ -19,6 +20,15 @@ public class Method {
 		this.statementList = statementList;
 		this.instanceVarList = instanceVarList;
 
+	}
+
+	public Method(String methodName, List<String> comments){
+		this.methodName = methodName;
+		this.comments = comments;
+	}
+
+	public List<String> getComments() {
+		return comments;
 	}
 
 	public void setStatementList(List<String> statementList) {

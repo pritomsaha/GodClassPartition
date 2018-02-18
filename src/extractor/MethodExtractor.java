@@ -36,6 +36,7 @@ public class MethodExtractor {
 			new VoidVisitorAdapter<Object>() {
 				@Override
 				public void visit(MethodDeclaration n, Object arg) {
+
 					String methodName = n.getNameAsString();
 					statementList = new ArrayList<>();
 					instanceVariables = new ArrayList<>();
@@ -45,9 +46,7 @@ public class MethodExtractor {
 
 							processNode(node);
 						}
-
 					}
-
 					String methodCode = n.toString();
 					methods.add(new Method(methodName, methodCode, statementList, instanceVariables));
 
@@ -63,9 +62,38 @@ public class MethodExtractor {
 		return methods;
 	}
 
-	public List<Method> getMethods() {
-		return methods;
+	public List<Method> extractMethodsWithComments(File file){
+		try {
+			new VoidVisitorAdapter<Object>() {
+				@Override
+				public void visit(MethodDeclaration n, Object arg) {
+
+					String methodName = n.getNameAsString();
+					statementList = new ArrayList<>();
+					instanceVariables = new ArrayList<>();
+					if(n.getChildNodes().size()>0) {
+
+						for (Node node: n.getChildNodes()){
+
+							processNode(node);
+						}
+					}
+					String methodCode = n.toString();
+					methods.add(new Method(methodName, methodCode, statementList, instanceVariables));
+
+					super.visit(n, arg);
+				}
+			}.visit(JavaParser.parse(file), null);
+
+		} catch (IOException e) {
+			System.out.println("Parsing error occur-->>" + file);
+			// new RuntimeException(e);
+		}
+
+		return  this.methods;
 	}
+
+
 
 	void processNode(Node node)
 	{

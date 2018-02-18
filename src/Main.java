@@ -1,18 +1,17 @@
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import extractor.MethodCallExtractor;
 import extractor.MethodExtractor;
 import method_chains_extraction.ChainExtraction;
-import method_chains_extraction.MatrixConstruction;
 import model.Method;
 
 public class Main {
 
 	public static void main(String[] args) {
 		String projectPath = "/home/pritom/Downloads/xerces2-j-Xerces-J_2_7_0";
+		//String projectPath = "UserManagement.java";
 		FileHandler fileHandler = new FileHandler();
 		List<File>  files = fileHandler.getJavaFiles(projectPath);
 		for (File file: files){
@@ -26,8 +25,7 @@ public class Main {
 	public static void proceed(File file){
 		//Extract all methods
 		MethodExtractor methodEX = new MethodExtractor();
-		methodEX.extractMethodsFromSourceFile(file);
-		List<Method> methods = methodEX.getMethods();
+		List<Method> methods = methodEX.extractMethodsFromSourceFile(file);
 
 		for (int i = 0; i < methods.size(); i++) {
 			//set ID for each methods

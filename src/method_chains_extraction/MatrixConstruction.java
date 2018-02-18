@@ -85,7 +85,7 @@ public class MatrixConstruction {
     private void calculateCSM(){
         TfIdf tfIdf = new TfIdf(this.methods);
         double[][] tfIdfVectors = tfIdf.getTfIdfVectors();
-        double[] equclideanNorm = tfIdf.getEuclideanNorm();
+        double[] euclideanNorm = tfIdf.getEuclideanNorm();
 
         for(int i=0; i<this.numMethod; i++)
             for(int j=i; j<this.numMethod; j++){
@@ -93,8 +93,8 @@ public class MatrixConstruction {
                     this.matrix[i][j] += 1.0*this.Wcsm; continue;
                 }
 
-                if(equclideanNorm[i]!=0 && equclideanNorm[i]!=0){
-                    double csm_ij = this.vecProduct(tfIdfVectors[i], tfIdfVectors[j])/(equclideanNorm[i]*equclideanNorm[j]);
+                if(euclideanNorm[i]!=0 && euclideanNorm[i]!=0){
+                    double csm_ij = this.vecProduct(tfIdfVectors[i], tfIdfVectors[j])/(euclideanNorm[i]*euclideanNorm[j]);
                     csm_ij *= this.Wcsm;
                     this.matrix[i][j] += csm_ij;
                     this.matrix[j][i] += csm_ij;
