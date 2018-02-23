@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileHandler {
-    private static final int minLoc = 1500;
+    private static final int minLoc = 10;
 
     public List<File> getJavaFiles(String projectPath){
         File directory = new File(projectPath);

@@ -2,6 +2,7 @@ import java.io.File;
 
 import java.util.List;
 
+import IR.StopWordRemover;
 import extractor.MethodCallExtractor;
 import extractor.MethodExtractor;
 import matrix_from_comments.MatrixConstructionWithComment;
@@ -12,16 +13,18 @@ public class Main {
 
 	public static void main(String[] args) {
 //		String projectPath = "/home/pritom/Downloads/xerces2-j-Xerces-J_2_7_0";
-		String projectPath = "/home/pritom/Downloads/AbstractDOMParser.java";
+
+		String projectPath = "UserManagement.java";
 		FileHandler fileHandler = new FileHandler();
 		List<File>  files = fileHandler.getJavaFiles(projectPath);
+
 		for (File file: files){
  			System.out.println(file.getAbsolutePath());
 			proceed(file);
 			System.out.println();
 		}
 
-		MatWithComments(files);
+		//MatWithComments(files);
 
 	}
 

@@ -88,7 +88,6 @@ public class MethodExtractor {
 	}
 
 
-
 	void processNode(Node node)
 	{
 		if (node instanceof FieldAccessExpr)

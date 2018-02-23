@@ -16,6 +16,7 @@ public class MethodProcessing {
             processedMethod = makeLowerCase(processedMethod);
             processedMethod = removeSpecialCharacter(processedMethod);
             processedMethod = stem(processedMethod);
+            processedMethod = removeStopWord(processedMethod);
             processedMethods.add(processedMethod);
         }
 
@@ -90,6 +91,11 @@ public class MethodProcessing {
             changedMethod.add(temp.trim());
         }
         changedMethod.removeAll(Collections.singleton(""));
+        return changedMethod;
+    }
+
+    private List<String> removeStopWord(List<String> method){
+        List<String> changedMethod = StopWordRemover.removeStopWord(method);
         return changedMethod;
     }
 
