@@ -18,7 +18,7 @@ public class CohesionCalculation {
     }
 
     public double getC3() {
-        return C3;
+        return this.C3;
     }
 
     public void calculateC3(){
@@ -39,7 +39,7 @@ public class CohesionCalculation {
             }
         }
         acsm /= numEdges;
-        acsm = (acsm>0)? acsm: 0;
+        this.C3 = (acsm>0)? acsm: 0;
     }
 
     private double vecProduct(double[] vector1, double[] vector2){
